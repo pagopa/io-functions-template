@@ -20,15 +20,22 @@ Una volta clonato il repo assicurarsi di:
 
 ## Sviluppo in locale
 
-- `cp local.settings.json.exmple local.settings.json`
+- `cp local.settings.json.example local.settings.json`
 - editare il parametro `AzureWebJobsStorage` e impostare la stringa di
   connessione a uno storage account Azure esistente
 - eseguire `yarn dev`
 
 ## Deploy
 
+Il deploy avviene tramite una [pipeline](./.circleci/config.yml)
+(workflow) configurata su [CircleCI](https://circleci.com/).
+
+A ogni push su master il workflow effettua il deploy sulle 
+risorse di staging. Quando invece un branch è taggato con `latest`
+il deploy avviene sulle functions in produzione.
+
 Per il deploy è necessario che il job su CircleCI possa autenticarsi
-tramite il client azure (az). Vanno quindi impostate le seguenti 
+tramite il client azure. Vanno quindi impostate le seguenti 
 variabili di ambiente nei settings del progetto CircleCI:
 
 ```shell
@@ -44,4 +51,6 @@ FUNCTION_APP_NAME="<function app name>"
 ## Esempi di function
 
 Sono presenti alcune function di esempio che permettono di testare la corretta
-esecuzione del runtime delle durable functions.
+esecuzione del runtime delle durable functions. Le funzioni attivate 
+da [trigger HTTP](./HttpTriggerFunction) utilizzano il pacchetto
+[io-functions-express](https://github.com/teamdigitale/io-functions-express).
