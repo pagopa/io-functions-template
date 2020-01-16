@@ -137,6 +137,7 @@ workflows:
               ignore: master
 
   deploy-to-staging:
+    when: $STAGING_RESOURCE_GROUP_NAME
     jobs:
       - prepare-deploy:
           <<: *staging_only
@@ -146,6 +147,7 @@ workflows:
             - prepare-deploy
 
   deploy-to-production:
+    when: $PRODUCTION_RESOURCE_GROUP_NAME
     jobs:
       - prepare-deploy:
           <<: *production_only
