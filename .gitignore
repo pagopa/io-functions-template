@@ -51,4 +51,6 @@ generated
 
 *.js
 !jest.config.js
+!.release-it.js
+
 
