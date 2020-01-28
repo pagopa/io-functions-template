@@ -9,7 +9,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "extensions:install": "func extensions install",
-    "start": "func start",
+    "start": "func start --javascript",
     "predev": "npm-run-all generate build",
     "dev": "npm-run-all --parallel start watch",
     "test": "jest",
