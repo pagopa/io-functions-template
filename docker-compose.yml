@@ -1,0 +1,88 @@
+version: "3.2"
+
+services:
+
+  functions:
+    image: functions-template:v2.0.0
+    build:
+      context: ./
+      dockerfile: docker/functions/Dockerfile
+    env_file: 
+      - .env
+    working_dir: /usr/src/app
+    ports:
+      - "7071:7071"
+    networks:
+      - io-fn
+    depends_on:
+      - fnstorage
+    volumes:
+      - .:/usr/src/app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.functions.rule=Host(`functions.localhost`)"
+      - "traefik.http.routers.functions.entrypoints=web"
+
+      - "traefik.http.middlewares.testHeader.headers.customrequestheaders.X-User-id=test"
+      # - "traefik.http.middlewares.testHeader.headers.customrequestheaders.X-User-id=test"
+      # - "traefik.http.middlewares.testHeader.headers.customrequestheaders.X-User-id=test"
+      # - "traefik.http.middlewares.testHeader.headers.customrequestheaders.X-User-id=test"
+
+  fnstorage:
+    image: azurite
+    build:
+      context: ./
+      dockerfile: docker/azurite/Dockerfile
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+    networks:
+      - io-fn
+
+  storage:
+    image: azurite
+    command: ["sh", "-c", "node bin/azurite -l /opt/azurite/folder --blobPort 10003 --queuePort 10004 --tablePort 10005"]
+    ports:
+      - "10003:10003"
+      - "10004:10004"
+      - "10005:10005"
+    depends_on:
+      - fnstorage
+    networks:
+      - io-fn
+
+  cosmosdb:
+    image: cosmosdb
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: docker/cosmosdb/Dockerfile
+    ports:
+      - "${COSMOSDB_PORT}:${COSMOSDB_PORT}"
+    networks:
+      - io-fn
+
+  traefik:
+    image: traefik:v2.0
+    command: |-
+      --entrypoints.web.address=:80
+      --providers.docker=true
+      --providers.docker.network=io-fn
+    env_file:
+      - .env
+    ports:
+      - 80:80
+    networks:
+      - io-fn
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./acme.json:/acme.json
+    restart: unless-stopped
+
+networks:
+  io-fn:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1450

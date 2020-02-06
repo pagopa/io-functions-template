@@ -52,3 +52,4 @@ generated
 *.js
 !jest.config.js
 
+azure-functions-core-tools
