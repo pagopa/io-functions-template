@@ -20,10 +20,11 @@ Una volta clonato il repo assicurarsi di:
 
 ## Sviluppo in locale
 
-- `cp local.settings.json.example local.settings.json`
-- editare il parametro `AzureWebJobsStorage` e impostare la stringa di
-  connessione a uno storage account Azure esistente
-- eseguire `yarn dev`
+```shell
+cp env.example .env
+docker-compose up -d
+docker-compose logs -f functions
+```
 
 ## Deploy
 
