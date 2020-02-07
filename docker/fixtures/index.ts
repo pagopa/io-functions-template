@@ -31,7 +31,7 @@ const documentClient = new DocumentDBClient(cosmosDbUri, {
 
 function createDatabase(databaseName: string): Promise<Either<Error, void>> {
   return new Promise(resolve => {
-    documentClient.createDatabase({ id: databaseName }, (err, ret) => {
+    documentClient.createDatabase({ id: databaseName }, (err, _) => {
       if (err) {
         return resolve(left<Error, void>(new Error(err.body)));
       }
