@@ -2,6 +2,11 @@ import * as express from "express";
 import * as t from "io-ts";
 
 import { Context } from "@azure/functions";
+import { ServiceModel } from "io-functions-commons/dist/src/models/service";
+import {
+  AzureUserAttributesMiddleware,
+  IAzureUserAttributes
+} from "io-functions-commons/dist/src/utils/middlewares/azure_user_attributes";
 import { ContextMiddleware } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
 import { RequiredParamMiddleware } from "io-functions-commons/dist/src/utils/middlewares/required_param";
 import {
@@ -16,6 +21,7 @@ import {
 
 type IHttpHandler = (
   context: Context,
+  userAttrs: IAzureUserAttributes,
   param: string
 ) => Promise<
   | IResponseSuccessJson<{
@@ -25,16 +31,21 @@ type IHttpHandler = (
 >;
 
 export function HttpHandler(): IHttpHandler {
-  return async (_, param: string) => {
-    return ResponseSuccessJson({ message: `Hello ${param} !` });
+  return async (ctx, userAttrs, param) => {
+    return ResponseSuccessJson({
+      headers: ctx.req?.headers,
+      message: `Hello ${param} !`,
+      user: userAttrs
+    });
   };
 }
 
-export function HttpCtrl(): express.RequestHandler {
+export function HttpCtrl(serviceModel: ServiceModel): express.RequestHandler {
   const handler = HttpHandler();
 
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
+    AzureUserAttributesMiddleware(serviceModel),
     RequiredParamMiddleware("someParam", t.string)
   );
 
