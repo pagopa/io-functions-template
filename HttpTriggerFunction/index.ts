@@ -7,7 +7,35 @@ import { AzureContextTransport } from "io-functions-commons/dist/src/utils/loggi
 import { setAppContext } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
 import createAzureFunctionHandler from "io-functions-express/dist/src/createAzureFunctionsHandler";
 
+import { DocumentClient as DocumentDBClient } from "documentdb";
+import {
+  SERVICE_COLLECTION_NAME,
+  ServiceModel
+} from "io-functions-commons/dist/src/models/service";
+import * as documentDbUtils from "io-functions-commons/dist/src/utils/documentdb";
+import { getRequiredStringEnv } from "io-functions-commons/dist/src/utils/env";
+
 import { HttpCtrl } from "./handler";
+
+//
+//  CosmosDB initialization
+//
+
+const cosmosDbUri = getRequiredStringEnv("CUSTOMCONNSTR_COSMOSDB_URI");
+const cosmosDbKey = getRequiredStringEnv("CUSTOMCONNSTR_COSMOSDB_KEY");
+const cosmosDbName = getRequiredStringEnv("COSMOSDB_NAME");
+
+const documentDbDatabaseUrl = documentDbUtils.getDatabaseUri(cosmosDbName);
+const servicesCollectionUrl = documentDbUtils.getCollectionUri(
+  documentDbDatabaseUrl,
+  SERVICE_COLLECTION_NAME
+);
+
+const documentClient = new DocumentDBClient(cosmosDbUri, {
+  masterKey: cosmosDbKey
+});
+
+const serviceModel = new ServiceModel(documentClient, servicesCollectionUrl);
 
 // tslint:disable-next-line: no-let
 let logger: Context["log"] | undefined;
@@ -21,7 +49,7 @@ const app = express();
 secureExpressApp(app);
 
 // Add express route
-app.get("/some/path/:someParam", HttpCtrl());
+app.get("/some/path/:someParam", HttpCtrl(serviceModel));
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
 
