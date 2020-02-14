@@ -84,7 +84,7 @@ const aService: Service = Service.decode({
 
 createDatabase(cosmosDbName)
   .then(() => createCollection("message-status", "messageId"))
-  .then(() => createCollection("messages", "messageId"))
+  .then(() => createCollection("messages", "fiscalCode"))
   .then(() => createCollection("notification-status", "notificationId"))
   .then(() => createCollection("notifications", "messageId"))
   .then(() => createCollection("profiles", "fiscalCode"))
