@@ -90,6 +90,7 @@ createDatabase(cosmosDbName)
   .then(() => createCollection("profiles", "fiscalCode"))
   .then(() => createCollection("sender-services", "recipientFiscalCode"))
   .then(() => createCollection("services", "serviceId"))
+  .then(() => createCollection("user-data-processing", "id"))
   .then(() => serviceModel.create(aService, aService.serviceId))
   // tslint:disable-next-line: no-console
   .then(s => console.log(s.value))
