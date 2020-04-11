@@ -8,6 +8,11 @@ import {
 } from "documentdb";
 import { Either, left, right } from "fp-ts/lib/Either";
 import {
+  Profile,
+  PROFILE_COLLECTION_NAME,
+  ProfileModel
+} from "io-functions-commons/dist/src/models/profile";
+import {
   Service,
   SERVICE_COLLECTION_NAME,
   ServiceModel
@@ -20,10 +25,6 @@ const cosmosDbUri = getRequiredStringEnv("CUSTOMCONNSTR_COSMOSDB_URI");
 const cosmosDbName = getRequiredStringEnv("COSMOSDB_NAME");
 
 const documentDbDatabaseUrl = documentDbUtils.getDatabaseUri(cosmosDbName);
-const servicesCollectionUrl = documentDbUtils.getCollectionUri(
-  documentDbDatabaseUrl,
-  SERVICE_COLLECTION_NAME
-);
 
 const documentClient = new DocumentDBClient(cosmosDbUri, {
   masterKey: cosmosDbKey
@@ -65,6 +66,10 @@ function createCollection(
   });
 }
 
+const servicesCollectionUrl = documentDbUtils.getCollectionUri(
+  documentDbDatabaseUrl,
+  SERVICE_COLLECTION_NAME
+);
 const serviceModel = new ServiceModel(documentClient, servicesCollectionUrl);
 
 const aService: Service = Service.decode({
@@ -82,6 +87,24 @@ const aService: Service = Service.decode({
   throw new Error("Cannot decode service payload.");
 });
 
+const profilesCollectionUrl = documentDbUtils.getCollectionUri(
+  documentDbDatabaseUrl,
+  PROFILE_COLLECTION_NAME
+);
+const profileModel = new ProfileModel(documentClient, profilesCollectionUrl);
+
+const aProfile: Profile = Profile.decode({
+  acceptedTosVersion: 1,
+  email: "email@example.com",
+  fiscalCode: "AAAAAA00A00A000A",
+  isEmailEnabled: true,
+  isEmailValidated: true,
+  isInboxEnabled: true,
+  isWebhookEnabled: true
+}).getOrElseL(() => {
+  throw new Error("Cannot decode profile payload.");
+});
+
 createDatabase(cosmosDbName)
   .then(() => createCollection("message-status", "messageId"))
   .then(() => createCollection("messages", "fiscalCode"))
@@ -91,6 +114,9 @@ createDatabase(cosmosDbName)
   .then(() => createCollection("sender-services", "recipientFiscalCode"))
   .then(() => createCollection("services", "serviceId"))
   .then(() => serviceModel.create(aService, aService.serviceId))
+  // tslint:disable-next-line: no-console
+  .then(p => console.log(p.value))
+  .then(() => profileModel.create(aProfile, aProfile.fiscalCode))
   // tslint:disable-next-line: no-console
   .then(s => console.log(s.value))
   // tslint:disable-next-line: no-console

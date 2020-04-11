@@ -9,9 +9,12 @@ services:
       dockerfile: docker/functions/Dockerfile
     env_file: 
       - .env
+    environment:
+      - languageWorkers__node__arguments=--inspect=0.0.0.0:5858
     working_dir: /usr/src/app
     ports:
       - "7071:7071"
+      - "5858:5858"
     networks:
       - io-fn
     depends_on:
@@ -22,11 +25,12 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.functions.rule=Host(`localhost`)"
       - "traefik.http.routers.functions.entrypoints=web"
+      - "traefik.http.services.functions.loadbalancer.server.port=7071"
 
       - "traefik.http.middlewares.testHeader.headers.customrequestheaders.x-user-id=unused"
       - "traefik.http.middlewares.testHeader.headers.customrequestheaders.x-user-groups=${REQ_USER_GROUPS}"
       - "traefik.http.middlewares.testHeader.headers.customrequestheaders.x-subscription-id=${REQ_SERVICE_ID}"
-      - "traefik.http.middlewares.testHeader.headers.customrequestheaders.x-user-email=unused@example.com"
+      - "traefik.http.middlewares.testHeader.headers.customrequestheaders.x-user-email=${SERVICE_EMAIL}"
       - "traefik.http.middlewares.testHeader.headers.customrequestheaders.x-user-note=unused"
       - "traefik.http.middlewares.testHeader.headers.customrequestheaders.x-functions-key=unused"
 
