@@ -2556,7 +2556,7 @@ duplexer3@^0.1.4:
   resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
   integrity sha1-7gHdHKwO08vH/b6jfcCo8c4ALOI=
 
-durable-functions@^1.2.4:
+durable-functions@^1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/durable-functions/-/durable-functions-1.4.4.tgz#9bb2015439123029bf748781e75c97c75fc8f70b"
   integrity sha512-Ys1lAuESU8Oz+GIMvS1GzWZkwQCQRMPOJVYmPPTQ5k3eoHeOVvoNLuChY91iAp++18k/yZtpbhLo9DwGU0+4/A==
