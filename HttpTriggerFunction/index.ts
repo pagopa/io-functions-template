@@ -2,40 +2,30 @@ import * as express from "express";
 import * as winston from "winston";
 
 import { Context } from "@azure/functions";
+import {
+  SERVICE_COLLECTION_NAME,
+  ServiceModel
+} from "io-functions-commons/dist/src/models/service";
 import { secureExpressApp } from "io-functions-commons/dist/src/utils/express";
 import { AzureContextTransport } from "io-functions-commons/dist/src/utils/logging";
 import { setAppContext } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
 import createAzureFunctionHandler from "io-functions-express/dist/src/createAzureFunctionsHandler";
 
-import { DocumentClient as DocumentDBClient } from "documentdb";
-import {
-  SERVICE_COLLECTION_NAME,
-  ServiceModel
-} from "io-functions-commons/dist/src/models/service";
-import * as documentDbUtils from "io-functions-commons/dist/src/utils/documentdb";
-import { getRequiredStringEnv } from "io-functions-commons/dist/src/utils/env";
-
+import { getConfigOrThrow } from "../utils/config";
+import { cosmosdbClient } from "../utils/cosmosdb";
 import { HttpCtrl } from "./handler";
 
 //
 //  CosmosDB initialization
 //
 
-const cosmosDbUri = getRequiredStringEnv("CUSTOMCONNSTR_COSMOSDB_URI");
-const cosmosDbKey = getRequiredStringEnv("CUSTOMCONNSTR_COSMOSDB_KEY");
-const cosmosDbName = getRequiredStringEnv("COSMOSDB_NAME");
+const config = getConfigOrThrow();
 
-const documentDbDatabaseUrl = documentDbUtils.getDatabaseUri(cosmosDbName);
-const servicesCollectionUrl = documentDbUtils.getCollectionUri(
-  documentDbDatabaseUrl,
-  SERVICE_COLLECTION_NAME
-);
+const servicesContainer = cosmosdbClient
+  .database(config.COSMOSDB_NAME)
+  .container(SERVICE_COLLECTION_NAME);
 
-const documentClient = new DocumentDBClient(cosmosDbUri, {
-  masterKey: cosmosDbKey
-});
-
-const serviceModel = new ServiceModel(documentClient, servicesCollectionUrl);
+const serviceModel = new ServiceModel(servicesContainer);
 
 // tslint:disable-next-line: no-let
 let logger: Context["log"] | undefined;

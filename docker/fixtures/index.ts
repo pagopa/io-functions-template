@@ -1,82 +1,59 @@
 /**
  * Insert fake data into CosmosDB database emulator.
  */
+
+import { ContainerResponse } from "@azure/cosmos";
+import { toError } from "fp-ts/lib/Either";
+import { TaskEither, tryCatch } from "fp-ts/lib/TaskEither";
 import {
-  CollectionMeta,
-  DocumentClient as DocumentDBClient,
-  UriFactory
-} from "documentdb";
-import { Either, left, right } from "fp-ts/lib/Either";
-import {
-  Profile,
+  NewProfile,
   PROFILE_COLLECTION_NAME,
   ProfileModel
 } from "io-functions-commons/dist/src/models/profile";
 import {
-  Service,
+  NewService,
   SERVICE_COLLECTION_NAME,
   ServiceModel
 } from "io-functions-commons/dist/src/models/service";
-import * as documentDbUtils from "io-functions-commons/dist/src/utils/documentdb";
-import { getRequiredStringEnv } from "io-functions-commons/dist/src/utils/env";
+import { getConfigOrThrow } from "../../utils/config";
+import { cosmosdbClient } from "../../utils/cosmosdb";
 
-const cosmosDbKey = getRequiredStringEnv("CUSTOMCONNSTR_COSMOSDB_KEY");
-const cosmosDbUri = getRequiredStringEnv("CUSTOMCONNSTR_COSMOSDB_URI");
-const cosmosDbName = getRequiredStringEnv("COSMOSDB_NAME");
+const config = getConfigOrThrow();
+const cosmosDbName = config.COSMOSDB_NAME;
 
-const documentDbDatabaseUrl = documentDbUtils.getDatabaseUri(cosmosDbName);
-
-const documentClient = new DocumentDBClient(cosmosDbUri, {
-  masterKey: cosmosDbKey
-});
-
-function createDatabase(databaseName: string): Promise<Either<Error, void>> {
-  return new Promise(resolve => {
-    documentClient.createDatabase({ id: databaseName }, (err, _) => {
-      if (err) {
-        return resolve(left<Error, void>(new Error(err.body)));
-      }
-      resolve(right<Error, void>(void 0));
-    });
-  });
+function createDatabase(databaseName: string): TaskEither<Error, void> {
+  return tryCatch(
+    () => cosmosdbClient.databases.createIfNotExists({ id: databaseName }),
+    toError
+  ).map(() => void 0);
 }
 
 function createCollection(
+  databaseName: string,
   collectionName: string,
   partitionKey: string
-): Promise<Either<Error, CollectionMeta>> {
-  return new Promise(resolve => {
-    const dbUri = UriFactory.createDatabaseUri(cosmosDbName);
-    documentClient.createCollection(
-      dbUri,
-      {
-        id: collectionName,
-        partitionKey: {
-          kind: "Hash",
-          paths: [`/${partitionKey}`]
-        }
-      },
-      (err, ret) => {
-        if (err) {
-          return resolve(left<Error, CollectionMeta>(new Error(err.body)));
-        }
-        resolve(right<Error, CollectionMeta>(ret));
-      }
-    );
-  });
+): TaskEither<Error, ContainerResponse> {
+  return tryCatch(
+    () =>
+      cosmosdbClient
+        .database(databaseName)
+        .containers.createIfNotExists({ id: collectionName, partitionKey }),
+    toError
+  );
 }
 
-const servicesCollectionUrl = documentDbUtils.getCollectionUri(
-  documentDbDatabaseUrl,
-  SERVICE_COLLECTION_NAME
-);
-const serviceModel = new ServiceModel(documentClient, servicesCollectionUrl);
+const servicesContainer = cosmosdbClient
+  .database(config.COSMOSDB_NAME)
+  .container(SERVICE_COLLECTION_NAME);
 
-const aService: Service = Service.decode({
+const serviceModel = new ServiceModel(servicesContainer);
+
+const aService: NewService = NewService.decode({
   authorizedCIDRs: [],
   authorizedRecipients: [],
   departmentName: "Deparment Name",
   isVisible: true,
+  kind: "INewService",
   maxAllowedPaymentAmount: 100000,
   organizationFiscalCode: "01234567890",
   organizationName: "Organization name",
@@ -87,36 +64,42 @@ const aService: Service = Service.decode({
   throw new Error("Cannot decode service payload.");
 });
 
-const profilesCollectionUrl = documentDbUtils.getCollectionUri(
-  documentDbDatabaseUrl,
-  PROFILE_COLLECTION_NAME
-);
-const profileModel = new ProfileModel(documentClient, profilesCollectionUrl);
+const profilesContainer = cosmosdbClient
+  .database(config.COSMOSDB_NAME)
+  .container(PROFILE_COLLECTION_NAME);
 
-const aProfile: Profile = Profile.decode({
+const profileModel = new ProfileModel(profilesContainer);
+
+const aProfile: NewProfile = NewProfile.decode({
   acceptedTosVersion: 1,
   email: "email@example.com",
   fiscalCode: "AAAAAA00A00A000A",
   isEmailEnabled: true,
   isEmailValidated: true,
   isInboxEnabled: true,
-  isWebhookEnabled: true
+  isWebhookEnabled: true,
+  kind: "INewProfile"
 }).getOrElseL(() => {
   throw new Error("Cannot decode profile payload.");
 });
 
 createDatabase(cosmosDbName)
-  .then(() => createCollection("message-status", "messageId"))
-  .then(() => createCollection("messages", "fiscalCode"))
-  .then(() => createCollection("notification-status", "notificationId"))
-  .then(() => createCollection("notifications", "messageId"))
-  .then(() => createCollection("profiles", "fiscalCode"))
-  .then(() => createCollection("sender-services", "recipientFiscalCode"))
-  .then(() => createCollection("services", "serviceId"))
-  .then(() => serviceModel.create(aService, aService.serviceId))
+  .chain(() => createCollection(cosmosDbName, "message-status", "messageId"))
+  .chain(() => createCollection(cosmosDbName, "messages", "fiscalCode"))
+  .chain(() =>
+    createCollection(cosmosDbName, "notification-status", "notificationId")
+  )
+  .chain(() => createCollection(cosmosDbName, "notifications", "messageId"))
+  .chain(() => createCollection(cosmosDbName, "profiles", "fiscalCode"))
+  .chain(() =>
+    createCollection(cosmosDbName, "sender-services", "recipientFiscalCode")
+  )
+  .chain(() => createCollection(cosmosDbName, "services", "serviceId"))
+  .run()
+  .then(() => serviceModel.create(aService))
   // tslint:disable-next-line: no-console
   .then(p => console.log(p.value))
-  .then(() => profileModel.create(aProfile, aProfile.fiscalCode))
+  .then(() => profileModel.create(aProfile))
   // tslint:disable-next-line: no-console
   .then(s => console.log(s.value))
   // tslint:disable-next-line: no-console
