@@ -73,18 +73,6 @@ services:
     networks:
       - io-fn
 
-  fixtures:
-    image: fixtures
-    env_file:
-      - .env
-    build:
-      context: ./
-      dockerfile: docker/fixtures/Dockerfile
-    depends_on:
-      - cosmosdb
-    networks:
-      - io-fn
-
   traefik:
     image: traefik:v2.0
     command: |-
