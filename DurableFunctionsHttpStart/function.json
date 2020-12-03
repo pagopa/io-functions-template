@@ -19,5 +19,5 @@
       "direction": "in"
     }
   ],
-  "scriptFile": "./index.js"
+  "scriptFile": "../dist/DurableFunctionsHttpStart/index.js"
 }

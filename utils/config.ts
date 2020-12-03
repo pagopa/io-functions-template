@@ -5,25 +5,22 @@
  * The configuration is evaluate eagerly at the first access to the module. The module exposes convenient methods to access such value.
  */
 
-import { MailerConfig } from "io-functions-commons/dist/src/mailer";
 import * as t from "io-ts";
 import { readableReport } from "italia-ts-commons/lib/reporters";
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 
 // global app configuration
 export type IConfig = t.TypeOf<typeof IConfig>;
-export const IConfig = t.intersection([
-  t.interface({
-    COSMOSDB_KEY: NonEmptyString,
-    COSMOSDB_NAME: NonEmptyString,
-    COSMOSDB_URI: NonEmptyString,
+export const IConfig = t.interface({
+  COSMOSDB_KEY: NonEmptyString,
+  COSMOSDB_NAME: NonEmptyString,
+  COSMOSDB_URI: NonEmptyString,
 
-    AzureWebJobsStorage: NonEmptyString,
+  AzureWebJobsStorage: NonEmptyString,
+  QueueStorageConnection: NonEmptyString,
 
-    isProduction: t.boolean
-  }),
-  MailerConfig
-]);
+  isProduction: t.boolean
+});
 
 // No need to re-evaluate this object for each call
 const errorOrConfig: t.Validation<IConfig> = IConfig.decode({
