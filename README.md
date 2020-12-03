@@ -18,6 +18,8 @@ Una volta clonato il repo assicurarsi di:
 - impostare a `false` il parametro `FUNCTIONS_V2_COMPATIBILITY_MODE` nel file
   `local.settings.json` nel caso di upgrade a `azure-functions@3.x`
 
+- modificare l' endpoint di healthcheck all' interno del file `deploy-pipelines.yml` in base al `basePath` configurato.
+
 ## Sviluppo in locale
 
 ```shell
@@ -31,26 +33,8 @@ open http://localhost/some/path/test
 
 ## Deploy
 
-Il deploy avviene tramite una [pipeline](./.circleci/config.yml)
-(workflow) configurata su [CircleCI](https://circleci.com/).
-
-A ogni push su master il workflow effettua il deploy sulle 
-risorse di staging. Quando invece un branch è taggato con `latest`
-il deploy avviene sulle functions in produzione.
-
-Per il deploy è necessario che il job su CircleCI possa autenticarsi
-tramite il client azure. Vanno quindi impostate le seguenti 
-variabili di ambiente nei settings del progetto CircleCI:
-
-```shell
-AZURE_SP_TENANT="<tenantid>"
-AZURE_SP="<service principal id>"
-AZURE_SP_PASSWORD="<service principal password>"
-AZURE_SUBSCRIPTION_ID="<subscription id>"
-PRODUCTION_RESOURCE_GROUP_NAME="<production resource group>"
-STAGING_RESOURCE_GROUP_NAME="<staging resource group>"
-FUNCTION_APP_NAME="<function app name>"
-```
+Il deploy avviene tramite una [pipeline](./.devops/deploy-pipelines.yml)
+(workflow) configurata su [Azure DevOps](https://dev.azure.com/pagopa-io/).
 
 ## Esempi di function
 
