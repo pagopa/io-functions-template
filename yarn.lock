@@ -899,9 +899,10 @@ agentkeepalive@^4.1.2:
     depd "^1.1.2"
     humanize-ms "^1.2.1"
 
-"agentkeepalive@git+https://github.com/pagopa/agentkeepalive.git#v4.1.1":
+"agentkeepalive@https://github.com/pagopa/agentkeepalive#v4.1.1":
   version "4.1.0"
-  resolved "git+https://github.com/pagopa/agentkeepalive.git#91309bcab216dccbd08631e227a974afbfe807fb"
+  uid "91309bcab216dccbd08631e227a974afbfe807fb"
+  resolved "https://github.com/pagopa/agentkeepalive#91309bcab216dccbd08631e227a974afbfe807fb"
   dependencies:
     debug "^4.1.0"
     depd "^1.1.2"
@@ -3338,9 +3339,9 @@ hide-powered-by@1.1.0:
   integrity sha512-Io1zA2yOA1YJslkr+AJlWSf2yWFkKjvkcL9Ni1XSUqnGLr/qRQe2UI3Cn/J9MsJht7yEVCe0SscY1HgVMujbgg==
 
 highlight.js@^10.0.0:
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.4.0.tgz#ef3ce475e5dfa7a48484260b49ea242ddab823a0"
-  integrity sha512-EfrUGcQ63oLJbj0J0RI9ebX6TAITbsDBLbsjr881L/X5fMO9+oadKzEF21C7R3ULKG6Gv3uoab2HiqVJa/4+oA==
+  version "10.4.1"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.4.1.tgz#d48fbcf4a9971c4361b3f95f302747afe19dbad0"
+  integrity sha512-yR5lWvNz7c85OhVAEAeFhVCc/GV4C30Fjzc/rCP0aCWzc1UUOPUk55dK/qdwTZHBvMZo+eZ2jpk62ndX/xMFlg==
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
