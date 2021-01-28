@@ -9,7 +9,8 @@ module.exports = {
       "**/__tests__/*",
       "**/__mocks__/*",
       "Dangerfile.*",
-      "*.d.ts"
+      "*.d.ts",
+      ".eslintrc.js"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
