@@ -13,8 +13,6 @@ import { AzureFunction, Context } from "@azure/functions";
 
 const activityFunction: AzureFunction = async (
   context: Context
-): Promise<string> => {
-  return `Hello ${context.bindings.name}!`;
-};
+): Promise<string> => `Hello ${context.bindings.name}!`;
 
 export default activityFunction;

@@ -25,19 +25,26 @@ type IHttpHandler = (
   param: string
 ) => Promise<
   | IResponseSuccessJson<{
-      message: string;
+      readonly message: string;
     }>
   | IResponseErrorNotFound
 >;
 
 export function HttpHandler(): IHttpHandler {
-  return async (ctx, userAttrs, param) => {
-    return ResponseSuccessJson({
+  return async (
+    ctx,
+    userAttrs,
+    param
+  ): Promise<
+    IResponseSuccessJson<{
+      readonly message: string;
+    }>
+  > =>
+    ResponseSuccessJson({
       headers: ctx.req?.headers,
       message: `Hello ${param} !`,
       user: userAttrs
     });
-  };
 }
 
 export function HttpCtrl(serviceModel: ServiceModel): express.RequestHandler {

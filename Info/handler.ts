@@ -10,8 +10,8 @@ import * as packageJson from "../package.json";
 import { checkApplicationHealth, HealthCheck } from "../utils/healthcheck";
 
 interface IInfo {
-  name: string;
-  version: string;
+  readonly name: string;
+  readonly version: string;
 }
 
 type InfoHandler = () => Promise<
@@ -19,7 +19,7 @@ type InfoHandler = () => Promise<
 >;
 
 export function InfoHandler(healthCheck: HealthCheck): InfoHandler {
-  return () =>
+  return (): Promise<IResponseSuccessJson<IInfo> | IResponseErrorInternal> =>
     healthCheck
       .fold<IResponseSuccessJson<IInfo> | IResponseErrorInternal>(
         problems => ResponseErrorInternal(problems.join("\n\n")),
