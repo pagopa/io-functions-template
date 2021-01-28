@@ -8,7 +8,6 @@ module.exports = {
       "generated",
       "**/__tests__/*",
       "**/__mocks__/*",
-      "Dangerfile.*",
       "*.d.ts",
       "*.js"
   ],
