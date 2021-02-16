@@ -2,7 +2,7 @@
   "name": "@pagopa/<YOUR PACKAGE NAME>",
   "description": "",
   "author": "IO team",
-  "repository": "https://github.com/pagoPA/<YOUR PROJECT NAME>",
+  "repository": "https://github.com/pagopa/<YOUR PROJECT NAME>",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
