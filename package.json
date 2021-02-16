@@ -1,8 +1,8 @@
 {
-  "name": "@pagopa/io-functions-template",
+  "name": "@pagopa/<YOUR PACKAGE NAME>",
   "description": "",
   "author": "IO team",
-  "repository": "https://github.com/pagoPA/io-functions-template",
+  "repository": "https://github.com/pagoPA/<YOUR PROJECT NAME>",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
