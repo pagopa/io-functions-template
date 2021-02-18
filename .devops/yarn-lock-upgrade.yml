@@ -1,16 +1,15 @@
-# Azure DevOps pipeline to do periodic dependency upgrade
+# 
+# Periodic Azure DevOps pipeline to check dependency upgraded and make a PR
 #
 
 # A pipeline with no CI trigger, just schedules
 trigger: none
 pr: none
 
-variables:
-  system.debug: true
-
 schedules:
+  # Every day at midnight 
   - cron: "0 0 * * *"
-    displayName: Daily midnight build
+    displayName: Daily midnight upgrade
     branches:
       include:
       - master
@@ -26,10 +25,8 @@ resources:
 
 
 # Execute agents (jobs) on latest Ubuntu version.
-# To change OS for a specific, ovverride "pool" attribute inside the job definition
 pool:
   vmImage: 'ubuntu-latest'
-
 
 jobs:
   - job: do_upgrade
