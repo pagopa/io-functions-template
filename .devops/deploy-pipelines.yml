@@ -37,7 +37,7 @@ resources:
     - repository: pagopaCommons
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v11
+      ref: refs/tags/v13
       endpoint: 'pagopa'
 
 stages:
