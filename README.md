@@ -20,7 +20,21 @@ Una volta clonato il repo assicurarsi di:
 
 - modificare l' endpoint di healthcheck all' interno del file `deploy-pipelines.yml` in base al `basePath` configurato.
 
-## Sviluppo in locale
+- fare una PR sul progetto [gitops](https://github.com/pagopa/gitops) per deployare le pipelines. (un esempio [qui](https://github.com/pagopa/gitops/pull/11) )
+
+- fare una PR sul progetto [io-infrastructure-live-new](https://github.com/pagopa/io-infrastructure-live-new) per fare il stetup degli ambienti di prod e staging della nuova function. (un esempio [qui](https://github.com/pagopa/io-infrastructure-live-new/pull/465) )
+
+## Sviluppo in locale con Docker
+
+```shell
+cp env.example .env
+yarn install
+yarn build
+docker-compose up -d --build
+docker-compose logs -f functions
+open http://localhost/some/path/test
+```
+## Sviluppo in locale con Docker
 
 ```shell
 cp env.example .env
