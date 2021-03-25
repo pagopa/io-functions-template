@@ -53,5 +53,8 @@ generated
 !jest.config.js
 !.release-it.js
 
+# ESLint files
+!.eslintrc.js
+.eslintcache
 
 azure-functions-core-tools
