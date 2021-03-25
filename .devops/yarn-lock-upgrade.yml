@@ -21,7 +21,7 @@ resources:
       type: github
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v14
-      endpoint: 'pagopa'
+      endpoint: 'io-azure-devops-github-ro'
 
 
 # Execute agents (jobs) on latest Ubuntu version.
@@ -33,4 +33,3 @@ jobs:
     steps:
       #Call the Yarn.lock updated the first time
       - template: templates/yarn-lock-upgrade/template.yaml@pagopaCommons
-
