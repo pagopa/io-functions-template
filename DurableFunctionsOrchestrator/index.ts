@@ -31,7 +31,7 @@ const orchestrator = df.orchestrator(function*(
       .decode(yield context.df.callActivity("ActivityFunction", "London"))
       .getOrElse("")
   ];
-  // tslint:disable-next-line: no-any
+  // eslint-disable-next-line , @typescript-eslint/no-explicit-any
 } as any);
 
 export default orchestrator;
