@@ -57,7 +57,7 @@
     "express": "^4.15.3",
     "fp-ts": "1.17.4",
     "io-functions-commons": "^17.0.0",
-    "io-functions-express": "^1.1.0",
+    "io-functions-express": "^1.1.2",
     "io-ts": "1.8.5",
     "italia-ts-commons": "^8.6.0",
     "winston": "^3.2.1"

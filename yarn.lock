@@ -618,7 +618,7 @@
     auto-changelog "^2.2.1"
     danger-plugin-yarn "^1.2.1"
     pivotaljs "^1.0.3"
-    
+
 "@pagopa/eslint-config@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@pagopa/eslint-config/-/eslint-config-1.1.1.tgz#09fdfa59708f44996c042451d4d16a624b276bcb"
@@ -4233,10 +4233,10 @@ io-functions-express@^0.1.1:
   resolved "https://registry.yarnpkg.com/io-functions-express/-/io-functions-express-0.1.1.tgz#6ae954fe89ec1d797c5e5d10eca5e77f08ff4a4d"
   integrity sha512-Co7sovRyB0lxgU6NFh5v72Apude3XbgKQtqA7slryvKoEqLAvlnLU7DtsYVoF62O3ZJdtSHYf9JWuhDc/di1mg==
 
-io-functions-express@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/io-functions-express/-/io-functions-express-1.1.0.tgz#278b7e3b91d1effc45752ca64779957aba8a40df"
-  integrity sha512-FEY81NiilqDTf9dTvhfAyg0eUrGE0U+m4pC8e52p90XEYxyS+wnSLr6eAciNGKDHXtNsnhwt00cPSbT/bZCsfQ==
+io-functions-express@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/io-functions-express/-/io-functions-express-1.1.2.tgz#3025242c2096e443a889c7eb8cb7555fb7f1e5c6"
+  integrity sha512-Gy+g5QQ7k+WnG9TpbgHXObIKrIj05iY/0uK86k+rTyTg6JF9YXVWCnKKmxX2LsJqLpWQtdwOQSwRQhNSfs/rxg==
 
 io-ts@1.8.5:
   version "1.8.5"
@@ -6898,17 +6898,17 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
-parse-diff@^0.7.0:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/parse-diff/-/parse-diff-0.7.1.tgz#9b7a2451c3725baf2c87c831ba192d40ee2237d4"
-  integrity sha512-1j3l8IKcy4yRK2W4o9EYvJLSzpAVwz4DXqCewYyx2vEwk2gcf3DBPqc8Fj4XV3K33OYJ08A8fWwyu/ykD/HUSg==
-
 parent-module@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/parent-module/-/parent-module-1.0.1.tgz#691d2709e78c79fae3a156622452d00762caaaa2"
   integrity sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==
   dependencies:
     callsites "^3.0.0"
+
+parse-diff@^0.7.0:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/parse-diff/-/parse-diff-0.7.1.tgz#9b7a2451c3725baf2c87c831ba192d40ee2237d4"
+  integrity sha512-1j3l8IKcy4yRK2W4o9EYvJLSzpAVwz4DXqCewYyx2vEwk2gcf3DBPqc8Fj4XV3K33OYJ08A8fWwyu/ykD/HUSg==
 
 parse-entities@^1.1.0:
   version "1.2.2"
