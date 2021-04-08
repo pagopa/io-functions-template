@@ -17,7 +17,6 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx --cache",
-    "lint-autofix": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
     "lint-api": "oval validate -p openapi/index.yaml",
     "dist:modules": "modclean -r -n default:safe && yarn install --production",
     "predeploy": "npm-run-all generate build dist:*",
@@ -60,7 +59,8 @@
     "io-functions-express": "^1.1.0",
     "io-ts": "1.8.5",
     "italia-ts-commons": "^8.6.0",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "node-fetch": "^2.6.0"
   },
   "resolutions": {
     "handlebars": "~4.5.3",

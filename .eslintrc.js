@@ -9,7 +9,8 @@ module.exports = {
       "**/__tests__/*",
       "**/__mocks__/*",
       "*.d.ts",
-      "*.js"
+      "*.js",
+      "Dangerfile.ts"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -19,8 +20,5 @@ module.exports = {
   "extends": [
       "@pagopa/eslint-config/strong",
   ],
-  "rules": {
-    "@typescript-eslint/naming-convention": "off",
-    "prefer-arrow/prefer-arrow-functions": "off",
-  }
+  "rules": {}
 };

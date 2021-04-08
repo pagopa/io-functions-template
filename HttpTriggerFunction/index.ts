@@ -13,7 +13,7 @@ import createAzureFunctionHandler from "io-functions-express/dist/src/createAzur
 
 import { getConfigOrThrow } from "../utils/config";
 import { cosmosdbClient } from "../utils/cosmosdb";
-import { HttpCtrl } from "./handler";
+import { httpCtrl } from "./handler";
 
 //
 //  CosmosDB initialization
@@ -39,15 +39,15 @@ const app = express();
 secureExpressApp(app);
 
 // Add express route
-app.get("/some/path/:someParam", HttpCtrl(serviceModel));
+app.get("/some/path/:someParam", httpCtrl(serviceModel));
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
 
 // Binds the express app to an Azure Function handler
-function httpStart(context: Context): void {
+const httpStart = (context: Context): void => {
   logger = context.log;
   setAppContext(app, context);
   azureFunctionHandler(context);
-}
+};
 
 export default httpStart;

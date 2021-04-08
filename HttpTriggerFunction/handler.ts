@@ -22,7 +22,7 @@ import {
 type IHttpHandler = (
   context: Context,
   userAttrs: IAzureUserAttributes,
-  param: string
+  param: unknown
 ) => Promise<
   | IResponseSuccessJson<{
       readonly message: string;
@@ -30,25 +30,25 @@ type IHttpHandler = (
   | IResponseErrorNotFound
 >;
 
-export function HttpHandler(): IHttpHandler {
-  return async (
-    ctx,
-    userAttrs,
-    param
-  ): Promise<
-    IResponseSuccessJson<{
-      readonly message: string;
-    }>
-  > =>
-    ResponseSuccessJson({
-      headers: ctx.req?.headers,
-      message: `Hello ${param} !`,
-      user: userAttrs
-    });
-}
+export const httpHandler = (): IHttpHandler => async (
+  ctx,
+  userAttrs,
+  param
+): Promise<
+  IResponseSuccessJson<{
+    readonly message: string;
+  }>
+> =>
+  ResponseSuccessJson({
+    headers: ctx.req?.headers,
+    message: `Hello ${param} !`,
+    user: userAttrs
+  });
 
-export function HttpCtrl(serviceModel: ServiceModel): express.RequestHandler {
-  const handler = HttpHandler();
+export const httpCtrl = (
+  serviceModel: ServiceModel
+): express.RequestHandler => {
+  const handler = httpHandler();
 
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
@@ -57,4 +57,4 @@ export function HttpCtrl(serviceModel: ServiceModel): express.RequestHandler {
   );
 
   return wrapRequestHandler(middlewaresWrap(handler));
-}
+};
