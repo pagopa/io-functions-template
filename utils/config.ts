@@ -6,12 +6,14 @@
  */
 
 import * as t from "io-ts";
+import { ValidationError } from "io-ts";
 import { readableReport } from "italia-ts-commons/lib/reporters";
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 
 // global app configuration
-export type IConfig = t.TypeOf<typeof IConfig>;
-export const IConfig = t.interface({
+export type IConfig = t.TypeOf<typeof iConfig>;
+export const iConfig = t.interface({
+  /* eslint-disable @typescript-eslint/naming-convention */
   AzureWebJobsStorage: NonEmptyString,
 
   COSMOSDB_KEY: NonEmptyString,
@@ -21,10 +23,11 @@ export const IConfig = t.interface({
   QueueStorageConnection: NonEmptyString,
 
   isProduction: t.boolean
+  /* eslint-enable @typescript-eslint/naming-convention */
 });
 
 // No need to re-evaluate this object for each call
-const errorOrConfig: t.Validation<IConfig> = IConfig.decode({
+const errorOrConfig: t.Validation<IConfig> = iConfig.decode({
   ...process.env,
   isProduction: process.env.NODE_ENV === "production"
 });
@@ -35,9 +38,7 @@ const errorOrConfig: t.Validation<IConfig> = IConfig.decode({
  *
  * @returns either the configuration values or a list of validation errors
  */
-export function getConfig(): t.Validation<IConfig> {
-  return errorOrConfig;
-}
+export const getConfig = (): t.Validation<IConfig> => errorOrConfig;
 
 /**
  * Read the application configuration and check for invalid values.
@@ -46,8 +47,7 @@ export function getConfig(): t.Validation<IConfig> {
  * @returns the configuration values
  * @throws validation errors found while parsing the application configuration
  */
-export function getConfigOrThrow(): IConfig {
-  return errorOrConfig.getOrElseL(errors => {
+export const getConfigOrThrow = (): IConfig =>
+  errorOrConfig.getOrElseL((errors: ReadonlyArray<ValidationError>) => {
     throw new Error(`Invalid configuration: ${readableReport(errors)}`);
   });
-}

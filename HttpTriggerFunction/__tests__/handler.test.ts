@@ -1,11 +1,10 @@
 /* tslint:disable: no-any */
 
-import { HttpHandler } from "../handler";
+import { httpHandler } from "../handler";
 
 describe("HttpCtrl", () => {
   it("should return a string when the query parameter is provided", async () => {
-    const httpHandler = HttpHandler();
-    const response = await httpHandler({} as any, {} as any, "param");
+    const response = await httpHandler()({} as any, {} as any, "param");
     expect(response.kind).toBe("IResponseSuccessJson");
   });
 });
