@@ -30,6 +30,7 @@ type IHttpHandler = (
   | IResponseErrorNotFound
 >;
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const HttpHandler = (): IHttpHandler => async (
   ctx,
   userAttrs,
@@ -45,6 +46,7 @@ export const HttpHandler = (): IHttpHandler => async (
     user: userAttrs
   });
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const HttpCtrl = (
   serviceModel: ServiceModel
 ): express.RequestHandler => {
