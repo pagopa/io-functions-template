@@ -3,14 +3,14 @@ import * as express from "express";
 import { secureExpressApp } from "io-functions-commons/dist/src/utils/express";
 import { setAppContext } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
 import createAzureFunctionHandler from "io-functions-express/dist/src/createAzureFunctionsHandler";
-import { info } from "./handler";
+import { Info } from "./handler";
 
 // Setup Express
 const app = express();
 secureExpressApp(app);
 
 // Add express route
-app.get("/api/v1/info", info());
+app.get("/api/v1/info", Info());
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
 

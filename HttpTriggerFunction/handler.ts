@@ -30,7 +30,8 @@ type IHttpHandler = (
   | IResponseErrorNotFound
 >;
 
-export const httpHandler = (): IHttpHandler => async (
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const HttpHandler = (): IHttpHandler => async (
   ctx,
   userAttrs,
   param
@@ -45,10 +46,11 @@ export const httpHandler = (): IHttpHandler => async (
     user: userAttrs
   });
 
-export const httpCtrl = (
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const HttpCtrl = (
   serviceModel: ServiceModel
 ): express.RequestHandler => {
-  const handler = httpHandler();
+  const handler = HttpHandler();
 
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),

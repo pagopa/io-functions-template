@@ -11,8 +11,9 @@ import { readableReport } from "italia-ts-commons/lib/reporters";
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 
 // global app configuration
-export type IConfig = t.TypeOf<typeof iConfig>;
-export const iConfig = t.interface({
+export type IConfig = t.TypeOf<typeof IConfig>;
+// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/ban-types
+export const IConfig = t.interface({
   /* eslint-disable @typescript-eslint/naming-convention */
   AzureWebJobsStorage: NonEmptyString,
 
@@ -27,7 +28,7 @@ export const iConfig = t.interface({
 });
 
 // No need to re-evaluate this object for each call
-const errorOrConfig: t.Validation<IConfig> = iConfig.decode({
+const errorOrConfig: t.Validation<IConfig> = IConfig.decode({
   ...process.env,
   isProduction: process.env.NODE_ENV === "production"
 });
