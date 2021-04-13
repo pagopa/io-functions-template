@@ -18,7 +18,7 @@ type InfoHandler = () => Promise<
   IResponseSuccessJson<IInfo> | IResponseErrorInternal
 >;
 
-export const infoHandler = (
+export const InfoHandler = (
   healthCheck: HealthCheck
 ): InfoHandler => (): Promise<
   IResponseSuccessJson<IInfo> | IResponseErrorInternal
@@ -34,8 +34,8 @@ export const infoHandler = (
     )
     .run();
 
-export const info = (): express.RequestHandler => {
-  const handler = infoHandler(checkApplicationHealth());
+export const Info = (): express.RequestHandler => {
+  const handler = InfoHandler(checkApplicationHealth());
 
   return wrapRequestHandler(handler);
 };

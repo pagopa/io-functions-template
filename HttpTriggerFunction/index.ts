@@ -13,7 +13,7 @@ import createAzureFunctionHandler from "io-functions-express/dist/src/createAzur
 
 import { getConfigOrThrow } from "../utils/config";
 import { cosmosdbClient } from "../utils/cosmosdb";
-import { httpCtrl } from "./handler";
+import { HttpCtrl } from "./handler";
 
 //
 //  CosmosDB initialization
@@ -39,7 +39,7 @@ const app = express();
 secureExpressApp(app);
 
 // Add express route
-app.get("/some/path/:someParam", httpCtrl(serviceModel));
+app.get("/some/path/:someParam", HttpCtrl(serviceModel));
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
 

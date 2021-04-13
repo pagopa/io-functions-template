@@ -30,7 +30,7 @@ type IHttpHandler = (
   | IResponseErrorNotFound
 >;
 
-export const httpHandler = (): IHttpHandler => async (
+export const HttpHandler = (): IHttpHandler => async (
   ctx,
   userAttrs,
   param
@@ -45,10 +45,10 @@ export const httpHandler = (): IHttpHandler => async (
     user: userAttrs
   });
 
-export const httpCtrl = (
+export const HttpCtrl = (
   serviceModel: ServiceModel
 ): express.RequestHandler => {
-  const handler = httpHandler();
+  const handler = HttpHandler();
 
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
