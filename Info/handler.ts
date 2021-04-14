@@ -18,7 +18,6 @@ type InfoHandler = () => Promise<
   IResponseSuccessJson<IInfo> | IResponseErrorInternal
 >;
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const InfoHandler = (
   healthCheck: HealthCheck
 ): InfoHandler => (): Promise<
@@ -35,7 +34,6 @@ export const InfoHandler = (
     )
     .run();
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const Info = (): express.RequestHandler => {
   const handler = InfoHandler(checkApplicationHealth());
 
