@@ -6,9 +6,12 @@
  */
 
 import * as t from "io-ts";
-import { ValidationError } from "io-ts";
-import { readableReport } from "italia-ts-commons/lib/reporters";
-import { NonEmptyString } from "italia-ts-commons/lib/strings";
+
+import * as E from "fp-ts/lib/Either";
+import { pipe } from "fp-ts/lib/function";
+
+import { readableReport } from "@pagopa/ts-commons/lib/reporters";
+import { NonEmptyString } from "@pagopa/ts-commons/lib/strings";
 
 // global app configuration
 export type IConfig = t.TypeOf<typeof IConfig>;
@@ -25,11 +28,13 @@ export const IConfig = t.interface({
   isProduction: t.boolean
 });
 
-// No need to re-evaluate this object for each call
-const errorOrConfig: t.Validation<IConfig> = IConfig.decode({
+export const envConfig = {
   ...process.env,
   isProduction: process.env.NODE_ENV === "production"
-});
+};
+
+// No need to re-evaluate this object for each call
+const errorOrConfig: t.Validation<IConfig> = IConfig.decode(envConfig);
 
 /**
  * Read the application configuration and check for invalid values.
@@ -47,6 +52,9 @@ export const getConfig = (): t.Validation<IConfig> => errorOrConfig;
  * @throws validation errors found while parsing the application configuration
  */
 export const getConfigOrThrow = (): IConfig =>
-  errorOrConfig.getOrElseL((errors: ReadonlyArray<ValidationError>) => {
-    throw new Error(`Invalid configuration: ${readableReport(errors)}`);
-  });
+  pipe(
+    errorOrConfig,
+    E.getOrElseW((errors: ReadonlyArray<t.ValidationError>) => {
+      throw new Error(`Invalid configuration: ${readableReport(errors)}`);
+    })
+  );
