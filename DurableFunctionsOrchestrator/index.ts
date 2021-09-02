@@ -17,19 +17,31 @@ import {
 import * as df from "durable-functions";
 import * as t from "io-ts";
 
+import * as E from "fp-ts/lib/Either";
+import { pipe } from "fp-ts/lib/function";
+
 const orchestrator = df.orchestrator(function*(
   context: IOrchestrationFunctionContext
 ): IterableIterator<Task> {
   return [
-    t.string
-      .decode(yield context.df.callActivity("ActivityFunction", "Tokyo"))
-      .getOrElse(""),
-    t.string
-      .decode(yield context.df.callActivity("ActivityFunction", "Seattle"))
-      .getOrElse(""),
-    t.string
-      .decode(yield context.df.callActivity("ActivityFunction", "London"))
-      .getOrElse("")
+    pipe(
+      t.string.decode(
+        yield context.df.callActivity("ActivityFunction", "Tokyo")
+      ),
+      E.getOrElse(() => "")
+    ),
+    pipe(
+      t.string.decode(
+        yield context.df.callActivity("ActivityFunction", "Seattle")
+      ),
+      E.getOrElse(() => "")
+    ),
+    pipe(
+      t.string.decode(
+        yield context.df.callActivity("ActivityFunction", "London")
+      ),
+      E.getOrElse(() => "")
+    )
   ];
   // eslint-disable-next-line , @typescript-eslint/no-explicit-any
 } as any);
