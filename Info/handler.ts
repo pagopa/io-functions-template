@@ -1,22 +1,16 @@
 import * as express from "express";
 import { wrapRequestHandler } from "@pagopa/io-functions-commons/dist/src/utils/request_middleware";
-import {
-  checkApplicationHealth,
-  checkAzureCosmosDbHealth,
-  checkAzureStorageHealth,
-  HealthCheck,
-  ProblemSource
-} from "@pagopa/io-functions-commons/dist/src/utils/healthcheck";
+import * as healthcheck from "@pagopa/io-functions-commons/dist/src/utils/healthcheck";
 import {
   IResponseErrorInternal,
   IResponseSuccessJson,
   ResponseErrorInternal,
   ResponseSuccessJson
 } from "@pagopa/ts-commons/lib/responses";
-import * as packageJson from "../package.json";
 
 import { pipe } from "fp-ts/lib/function";
 import * as TE from "fp-ts/lib/TaskEither";
+import * as packageJson from "../package.json";
 
 import { envConfig, IConfig } from "../utils/config";
 
@@ -32,7 +26,7 @@ type InfoHandler = () => Promise<
 export const InfoHandler = (
   checkApplicationHealth: (
     config: unknown
-  ) => HealthCheck<ProblemSource, true>
+  ) => healthcheck.HealthCheck<healthcheck.ProblemSource, true>
 ): InfoHandler => (): Promise<
   IResponseSuccessJson<IInfo> | IResponseErrorInternal
 > =>
@@ -49,13 +43,13 @@ export const InfoHandler = (
     TE.toUnion
   )();
 
-
-
 export const Info = (): express.RequestHandler => {
   const handler = InfoHandler(
-    checkApplicationHealth(IConfig, [
-      c => checkAzureCosmosDbHealth(c.COSMOSDB_URI, c.COSMOSDB_KEY),
-      c => checkAzureStorageHealth(c.QueueStorageConnection)
+    healthcheck.checkApplicationHealth(IConfig, [
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+      c => healthcheck.checkAzureCosmosDbHealth(c.COSMOSDB_URI, c.COSMOSDB_KEY),
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+      c => healthcheck.checkAzureStorageHealth(c.QueueStorageConnection)
     ])
   );
 
