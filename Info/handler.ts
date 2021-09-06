@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
 import * as express from "express";
 import { wrapRequestHandler } from "@pagopa/io-functions-commons/dist/src/utils/request_middleware";
 import * as healthcheck from "@pagopa/io-functions-commons/dist/src/utils/healthcheck";
@@ -23,10 +25,12 @@ type InfoHandler = () => Promise<
   IResponseSuccessJson<IInfo> | IResponseErrorInternal
 >;
 
+type HealthChecker = (
+  config: unknown
+) => healthcheck.HealthCheck<healthcheck.ProblemSource, true>;
+
 export const InfoHandler = (
-  checkApplicationHealth: (
-    config: unknown
-  ) => healthcheck.HealthCheck<healthcheck.ProblemSource, true>
+  checkApplicationHealth: HealthChecker
 ): InfoHandler => (): Promise<
   IResponseSuccessJson<IInfo> | IResponseErrorInternal
 > =>
@@ -46,9 +50,7 @@ export const InfoHandler = (
 export const Info = (): express.RequestHandler => {
   const handler = InfoHandler(
     healthcheck.checkApplicationHealth(IConfig, [
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       c => healthcheck.checkAzureCosmosDbHealth(c.COSMOSDB_URI, c.COSMOSDB_KEY),
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       c => healthcheck.checkAzureStorageHealth(c.QueueStorageConnection)
     ])
   );
