@@ -52,7 +52,7 @@
   "dependencies": {
     "@azure/cosmos": "^3.7.2",
     "azure-storage": "^2.10.3",
-    "durable-functions": "^1.4.4",
+    "durable-functions": "^1.4.5",
     "express": "^4.15.3",
     "fp-ts": "1.17.4",
     "io-functions-commons": "^17.0.0",
