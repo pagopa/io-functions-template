@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "prebuild": "shx rm -rf dist && yarn generate",
+    "prebuild": "shx rm -rf dist && (cd scripts && ./check_referenced_variables.sh) && yarn generate",
     "postbuild": "dependency-check package.json --no-dev --missing ./dist/**/*.js",
     "build": "tsc",
     "watch": "tsc -w",
