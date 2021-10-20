@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "prebuild": "shx rm -rf dist && ./scripts/check_referenced_variables.sh && yarn generate",
+    "prebuild": "shx rm -rf dist && (cd ./scripts && ./check_referenced_variables.sh) && yarn generate",
     "postbuild": "dependency-check package.json --no-dev --missing ./dist/**/*.js",
     "build": "tsc",
     "watch": "tsc -w",
@@ -23,7 +23,8 @@
     "generate:definitions": "shx rm -rf ./generated/definitions && mkdir -p ./generated/definitions && gen-api-models --api-spec ./openapi/index.yaml --out-dir ./generated/definitions",
     "generate": "npm-run-all generate:*",
     "preversion": "auto-changelog  --config .auto-changelog.json --unreleased --commit-limit false --stdout --template preview.hbs",
-    "version": "auto-changelog -p --config .auto-changelog.json --unreleased && git add CHANGELOG.md"
+    "version": "auto-changelog -p --config .auto-changelog.json --unreleased && git add CHANGELOG.md",
+    "scripts:update": "cd scripts && ./update_attributes_json.sh"
   },
   "devDependencies": {
     "@azure/functions": "^1.2.2",
