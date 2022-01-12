@@ -55,7 +55,7 @@
     "@pagopa/io-functions-commons": "^21",
     "@pagopa/ts-commons": "^10.0.1",
     "azure-storage": "^2.10.3",
-    "durable-functions": "^1.4.4",
+    "durable-functions": "^1.4.5",
     "express": "^4.15.3",
     "fp-ts": "^2.10.5",
     "io-ts": "^2.2.16",
