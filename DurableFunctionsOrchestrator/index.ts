@@ -9,16 +9,14 @@
  *    function app in Kudu
  */
 
-import {
-  IOrchestrationFunctionContext,
-  Task
-} from "durable-functions/lib/src/classes";
+import { IOrchestrationFunctionContext } from "durable-functions/lib/src/classes";
 
 import * as df from "durable-functions";
 import * as t from "io-ts";
 
 import * as E from "fp-ts/lib/Either";
 import { pipe } from "fp-ts/lib/function";
+import { Task } from "durable-functions/lib/src/task";
 
 const orchestrator = df.orchestrator(function*(
   context: IOrchestrationFunctionContext
