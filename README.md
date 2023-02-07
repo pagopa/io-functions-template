@@ -16,7 +16,7 @@ Una volta clonato il repo assicurarsi di:
   function](https://docs.microsoft.com/it-it/azure/azure-functions/durable/durable-functions-bindings#host-json)
 
 - impostare a `false` il parametro `FUNCTIONS_V2_COMPATIBILITY_MODE` nel file
-  `local.settings.json` nel caso di upgrade a `azure-functions@3.x`
+  `local.settings.json` nel caso di upgrade a `azure-functions` `3.x` o `4.x`
 
 - modificare l' endpoint di healthcheck all' interno del file `deploy-pipelines.yml` in base al `basePath` configurato.
 
