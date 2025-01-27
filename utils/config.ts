@@ -19,7 +19,7 @@ export type AppInsightsConfig = t.TypeOf<typeof AppInsightsConfig>;
 export const AppInsightsConfig = t.intersection([
   t.type({
     APPINSIGHTS_CLOUD_ROLE_NAME: NonEmptyString,
-    APPINSIGHTS_CONNECTION_STRING: NonEmptyString
+    APPLICATIONINSIGHTS_CONNECTION_STRING: NonEmptyString
   }),
   t.partial({
     APPINSIGHTS_DISABLE: NonEmptyString,

@@ -19,15 +19,18 @@ export const initTelemetryClient = (config: AppInsightsConfig) =>
     ai.defaultClient,
     O.fromNullable,
     O.getOrElse(() => {
-      const client = initAppInsights(config.APPINSIGHTS_CONNECTION_STRING, {
-        cloudRole: config.APPINSIGHTS_CLOUD_ROLE_NAME,
-        disableAppInsights: config.APPINSIGHTS_DISABLE === "true",
-        samplingPercentage: pipe(
-          config.APPINSIGHTS_SAMPLING_PERCENTAGE,
-          O.fromNullable,
-          O.getOrElse(() => DEFAULT_SAMPLING_PERCENTAGE)
-        )
-      });
+      const client = initAppInsights(
+        config.APPLICATIONINSIGHTS_CONNECTION_STRING,
+        {
+          cloudRole: config.APPINSIGHTS_CLOUD_ROLE_NAME,
+          disableAppInsights: config.APPINSIGHTS_DISABLE === "true",
+          samplingPercentage: pipe(
+            config.APPINSIGHTS_SAMPLING_PERCENTAGE,
+            O.fromNullable,
+            O.getOrElse(() => DEFAULT_SAMPLING_PERCENTAGE)
+          )
+        }
+      );
       // eslint-disable-next-line functional/immutable-data
       client.config.correlationHeaderExcludedDomains =
         config.APPINSIGHTS_EXCLUDED_DOMAINS || [];
