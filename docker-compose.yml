@@ -3,10 +3,10 @@ version: "3.2"
 services:
 
   functions:
-    image: functions-template:v2.0.0
+    image: functions-node-20
     build:
       context: ./
-      dockerfile: docker/functions/Dockerfile
+      dockerfile: docker/functions-node-20/Dockerfile
     env_file: 
       - .env
     environment:
