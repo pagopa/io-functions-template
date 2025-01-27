@@ -12,21 +12,40 @@ import { pipe } from "fp-ts/lib/function";
 
 import { readableReport } from "@pagopa/ts-commons/lib/reporters";
 import { NonEmptyString } from "@pagopa/ts-commons/lib/strings";
+import { CommaSeparatedListOf } from "@pagopa/ts-commons/lib/comma-separated-list";
+import { IntegerFromString } from "@pagopa/ts-commons/lib/numbers";
 
+export type AppInsightsConfig = t.TypeOf<typeof AppInsightsConfig>;
+export const AppInsightsConfig = t.intersection([
+  t.type({
+    APPINSIGHTS_CLOUD_ROLE_NAME: NonEmptyString,
+    APPINSIGHTS_CONNECTION_STRING: NonEmptyString
+  }),
+  t.partial({
+    APPINSIGHTS_DISABLE: NonEmptyString,
+    APPINSIGHTS_EXCLUDED_DOMAINS: CommaSeparatedListOf(t.string).pipe(
+      t.array(NonEmptyString)
+    ),
+    APPINSIGHTS_SAMPLING_PERCENTAGE: IntegerFromString
+  })
+]);
 // global app configuration
 export type IConfig = t.TypeOf<typeof IConfig>;
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const IConfig = t.interface({
-  AzureWebJobsStorage: NonEmptyString,
+export const IConfig = t.intersection([
+  t.interface({
+    AzureWebJobsStorage: NonEmptyString,
 
-  COSMOSDB_KEY: NonEmptyString,
-  COSMOSDB_NAME: NonEmptyString,
-  COSMOSDB_URI: NonEmptyString,
+    COSMOSDB_KEY: NonEmptyString,
+    COSMOSDB_NAME: NonEmptyString,
+    COSMOSDB_URI: NonEmptyString,
 
-  QueueStorageConnection: NonEmptyString,
+    QueueStorageConnection: NonEmptyString,
 
-  isProduction: t.boolean
-});
+    isProduction: t.boolean
+  }),
+  AppInsightsConfig
+]);
 
 export const envConfig = {
   ...process.env,
